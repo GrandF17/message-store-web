@@ -1,10 +1,11 @@
-import { Container, Input } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import MessageContainer from "./MessageContainer";
+import Input from "./Input";
 
 const messages: string[] = [
   "Oh hy mark!",
   "Hello there:)",
-  "Please don't erase me... ;(HHHHHHHHHHHHHudjsfbnvierudfvioedhnvilweruHHHHHHHHHHHHHudjsfbnvierudfvioedhnvilweru",
+  "Please don't erase me... ;(",
 ];
 
 function Body() {
@@ -18,11 +19,7 @@ function Body() {
       justifyContent="space-around"
       marginTop={100}
     >
-      <Input
-        width={"200px"}
-        variant="flushed"
-        placeholder="Input your message here..."
-      />
+      <Input />
       <MessageContainer messages={messages} />
     </Container>
   );

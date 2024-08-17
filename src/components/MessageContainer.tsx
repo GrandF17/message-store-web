@@ -14,6 +14,7 @@ const MessageContainer: FC<ContainerProps> = ({ messages }) => {
       spacing={3}
       borderRadius={"20px"}
       padding={"20px"}
+      alignItems={"flex-start"}
     >
       {messages.map((message) => (
         <Message message={message} />

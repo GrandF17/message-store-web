@@ -10,10 +10,10 @@ const Message: FC<ContainerProps> = ({ message }) => {
     <Flex
       justifyContent={"center"}
       maxW={"450px"}
-      margin={"10px"}
-      borderRadius={"20px"}
+      borderRadius={"10px"}
       padding={"10px"}
       bgColor={"black"}
+      overflowWrap={"anywhere"}
     >
       {message}
     </Flex>
