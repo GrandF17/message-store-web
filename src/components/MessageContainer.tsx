@@ -16,8 +16,8 @@ const MessageContainer: FC<ContainerProps> = ({ messages }) => {
       padding={"20px"}
       alignItems={"flex-start"}
     >
-      {messages.map((message) => (
-        <Message message={message} />
+      {messages.map((message, i) => (
+        <Message key={i} message={message} />
       ))}
     </VStack>
   );

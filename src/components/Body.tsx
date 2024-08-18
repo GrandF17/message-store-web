@@ -1,14 +1,46 @@
 import { Container } from "@chakra-ui/react";
-import MessageContainer from "./MessageContainer";
-import Input from "./Input";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "react-query";
 
-const messages: string[] = [
-  "Oh hy mark!",
-  "Hello there:)",
-  "Please don't erase me... ;(",
-];
+import MessageContainer from "./MessageContainer";
+import SmartInput from "./Input";
+import { fetchMessages } from "../utils/express.api";
 
 function Body() {
+  const queryClient = useQueryClient();
+  const { data: messages = [] } = useQuery("messages", fetchMessages);
+
+  useEffect(() => {
+    const ws = new WebSocket(`ws://${process.env.REACT_APP_URL}`);
+    console.log("SETUPED!!!");
+
+    ws.onmessage = (event) => {
+      const data: { type: string; message: string } = JSON.parse(event.data);
+
+      if (data.type === "new_message") {
+        queryClient.invalidateQueries("messages");
+        // refetch();
+      }
+    };
+
+    ws.onopen = function () {
+      console.log("WebSocket connection opened");
+    };
+
+    ws.onclose = function (event: CloseEvent) {
+      if (event.wasClean) console.log("Connection closed");
+      else console.log("WebSocket connection's broken");
+
+      console.log("Event code: " + event.code + "; Reason: " + event.reason);
+    };
+
+    ws.onerror = function (error: Event) {
+      console.log("Error: ", error);
+    };
+
+    return () => ws.close();
+  }, [queryClient]);
+
   return (
     <Container
       as="main"
@@ -19,7 +51,7 @@ function Body() {
       justifyContent="space-around"
       marginTop={100}
     >
-      <Input />
+      <SmartInput />
       <MessageContainer messages={messages} />
     </Container>
   );

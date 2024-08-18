@@ -1,31 +1,20 @@
 import { Button, Flex, Input } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { fetchNewMessage } from "../utils/express.api";
+import { useState } from "react";
 
-const MessageContainer = () => {
+const SmartInput = () => {
   const [message, setMessage] = useState("");
 
   const send = async () => {
-    try {
-      const resp = await fetch(`${process.env.REACT_APP_API_URL}/add_message`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-      console.log("Responce: ", resp);
-    } catch (e) {
-      console.error(e);
-    }
+    if (!message) return;
+    await fetchNewMessage(message);
+    setMessage("");
   };
-
-  useEffect(() => {
-    console.log("New message: ", message);
-  }, [message]);
 
   return (
     <Flex flexDirection={"row"}>
       <Input
+        value={message}
         width={"200px"}
         variant="flushed"
         placeholder="Input your message here..."
@@ -38,4 +27,4 @@ const MessageContainer = () => {
   );
 };
 
-export default MessageContainer;
+export default SmartInput;
